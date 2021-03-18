@@ -2,6 +2,8 @@ package com.appsdeveloperblog.app.ws.ui.model.request;
 
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class UserDetailsRequestModel {
 	private String firstName;
@@ -11,6 +13,8 @@ public class UserDetailsRequestModel {
 	private String email;
 	
 	private String password;
+
+	private List<AddressRequestModel> addresses;
 
 	public String getFirstName() {
 		return firstName;
@@ -42,6 +46,13 @@ public class UserDetailsRequestModel {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public List<AddressRequestModel> getAddresses() {
+		return addresses;
+	}
+	public void setAddresses(List<AddressRequestModel> addresses) {
+		this.addresses = addresses;
 	}
 
 }
