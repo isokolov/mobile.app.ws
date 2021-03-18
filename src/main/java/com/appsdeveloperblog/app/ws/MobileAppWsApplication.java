@@ -7,7 +7,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
-public class MobileAppWsApplication {
+public class MobileAppWsApplication /* extends SpringBootServletInitializer */ {
+
+	/*  For creating war with SpringBootServletInitializer, change jar to war in pom.xml
+		and add dependency for tomcat
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(MobileAppWsApplication.class);
+	}  */
 
 	public static void main(String[] args) {
 		SpringApplication.run(MobileAppWsApplication.class, args);
