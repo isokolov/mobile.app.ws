@@ -1,12 +1,8 @@
 package com.appsdeveloperblog.app.ws.io.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name="users")
@@ -38,8 +34,8 @@ public class UserEntity implements Serializable {
 	@Column(nullable=false)
 	private Boolean emailVerificationStatus = false;
 	
-	/* @OneToMany(mappedBy="userDetails", cascade=CascadeType.ALL)
-	private List<AddressEntity> addresses; */
+	@OneToMany(mappedBy="userDetails", cascade=CascadeType.ALL)
+	private List<AddressEntity> addresses;
 
 	public long getId() {
 		return id;
@@ -105,13 +101,13 @@ public class UserEntity implements Serializable {
 		this.emailVerificationStatus = emailVerificationStatus;
 	}
 
-	/* public List<AddressEntity> getAddresses() {
+	public List<AddressEntity> getAddresses() {
 		return addresses;
 	}
 
 	public void setAddresses(List<AddressEntity> addresses) {
 		this.addresses = addresses;
-	} */
+	}
 	
 	
 

@@ -1,10 +1,13 @@
 package com.appsdeveloperblog.app.ws.ui.model.response;
 
+import java.util.List;
+
 public class UserRest {
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String userId;
+	private List<AddressesRest> addresses;
 
 	public String getFirstName() {
 		return firstName;
@@ -37,4 +40,13 @@ public class UserRest {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+
+	public List<AddressesRest> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<AddressesRest> addresses) {
+		this.addresses = addresses;
+	}
+
 }
