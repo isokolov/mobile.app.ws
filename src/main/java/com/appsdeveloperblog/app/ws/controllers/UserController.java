@@ -13,11 +13,17 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
@@ -103,30 +109,52 @@ public class UserController {
 
 	// http://localhost:8080/mobile-app-ws/users/jfhdjeufhdhdj/addressses
 	@GetMapping(path = "/{id}/addresses", produces = { MediaType.APPLICATION_XML_VALUE,
-			MediaType.APPLICATION_JSON_VALUE })
-	public List<AddressesRest> getUserAddresses(@PathVariable String id) {
-		List<AddressesRest> returnValue = new ArrayList<>();
+			MediaType.APPLICATION_JSON_VALUE, "application/hal+json" })
+	public CollectionModel<AddressesRest> getUserAddresses(@PathVariable String id) {
+
+		List<AddressesRest> addressesListRestModel = new ArrayList<>();
 
 		List<AddressDTO> addressesDTO = addressService.getAddresses(id);
 
 		if (addressesDTO != null && !addressesDTO.isEmpty()) {
 			java.lang.reflect.Type listType = new TypeToken<List<AddressesRest>>() {
 			}.getType();
-			returnValue = new ModelMapper().map(addressesDTO, listType);
+			//returnValue = new ModelMapper().map(addressesDTO, listType);
+			addressesListRestModel = new ModelMapper().map(addressesDTO, listType);
+
+			for (AddressesRest addressRest : addressesListRestModel) {
+				Link addressLink = linkTo(methodOn(UserController.class).getUserAddress(id, addressRest.getAddressId()))
+						.withSelfRel();
+				addressRest.add(addressLink);
+
+				Link userLink = linkTo(methodOn(UserController.class).getUser(id)).withRel("user");
+				addressRest.add(userLink);
+			}
 		}
 
-		return returnValue;
+		return new CollectionModel<AddressesRest>(addressesListRestModel);
 	}
 
+	/* https://docs.spring.io/spring-hateoas/docs/current/reference/html/ */
 	@GetMapping(path = "/{userId}/addresses/{addressId}", produces = { MediaType.APPLICATION_JSON_VALUE,
-			MediaType.APPLICATION_XML_VALUE })
-	public AddressesRest getUserAddress(@PathVariable String addressId) {
+			MediaType.APPLICATION_JSON_VALUE, "application/hal+json"  })
+	public EntityModel<AddressesRest> getUserAddress(@PathVariable String userId,
+										@PathVariable String addressId) {
 
 		AddressDTO addressesDto = addressService.getAddress(addressId);
 
 		ModelMapper modelMapper = new ModelMapper();
+		Link addressLink = linkTo(methodOn(UserController.class).getUserAddress(userId, addressId)).withSelfRel();
+		Link userLink = linkTo(UserController.class).slash(userId).withRel("user");
+		Link addressesLink = linkTo(methodOn(UserController.class).getUserAddresses(userId)).withRel("addresses");
 
-		return modelMapper.map(addressesDto, AddressesRest.class);
+		AddressesRest addressesRestModel = modelMapper.map(addressesDto, AddressesRest.class);
+
+		addressesRestModel.add(addressLink);
+		addressesRestModel.add(userLink);
+		addressesRestModel.add(addressesLink);
+
+		return new EntityModel<AddressesRest>(addressesRestModel);
 	}
 
 }
