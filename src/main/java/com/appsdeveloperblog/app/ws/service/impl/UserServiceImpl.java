@@ -1,7 +1,9 @@
 package com.appsdeveloperblog.app.ws.service.impl;
 
 import com.appsdeveloperblog.app.ws.exceptions.UserServiceException;
+import com.appsdeveloperblog.app.ws.io.entity.PasswordResetTokenEntity;
 import com.appsdeveloperblog.app.ws.io.entity.UserEntity;
+import com.appsdeveloperblog.app.ws.repository.PasswordResetTokenRepository;
 import com.appsdeveloperblog.app.ws.repository.UserRepository;
 import com.appsdeveloperblog.app.ws.service.UserService;
 import com.appsdeveloperblog.app.ws.shared.AmazonSES;
@@ -38,6 +40,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	AmazonSES amazonSES;
+
+	@Autowired
+	PasswordResetTokenRepository passwordResetTokenRepository;
 
 	@Override
 	public UserDto createUser(UserDto user) {
@@ -196,7 +201,7 @@ public class UserServiceImpl implements UserService {
 		return returnValue;
 	}
 
-	/*@Override
+	@Override
 	public boolean requestPasswordReset(String email) {
 
 		boolean returnValue = false;
@@ -254,5 +259,5 @@ public class UserServiceImpl implements UserService {
 		passwordResetTokenRepository.delete(passwordResetTokenEntity);
 
 		return returnValue;
-	}*/
+	}
 }
