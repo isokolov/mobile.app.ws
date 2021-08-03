@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 
 		if (userRepository.findByEmail(user.getEmail()) != null) {
-			throw new RuntimeException("Record already exists");
+			throw new UserServiceException("Record already exists");
 		}
 
         for(int i=0;i<user.getAddresses().size();i++)
@@ -77,7 +77,6 @@ public class UserServiceImpl implements UserService {
 
 		// Send an email message to user to verify their email address
 		amazonSES.verifyEmail(returnValue);
-
 
 		return returnValue;
 	}
