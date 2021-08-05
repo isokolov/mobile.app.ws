@@ -4,6 +4,7 @@ import com.appsdeveloperblog.app.ws.security.AppProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
@@ -24,6 +25,7 @@ public class MobileAppWsApplication /* extends SpringBootServletInitializer */ {
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+
 
 	@Bean
 	public SpringApplicationContext springApplicationContext()
