@@ -11,6 +11,9 @@ import com.appsdeveloperblog.app.ws.ui.model.response.AddressesRest;
 import com.appsdeveloperblog.app.ws.ui.model.response.OperationStatusModel;
 import com.appsdeveloperblog.app.ws.ui.model.response.RequestOperationStatus;
 import com.appsdeveloperblog.app.ws.ui.model.response.UserRest;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
@@ -93,6 +96,9 @@ public class 	UserController {
 		return returnValue;
 	}
 
+	@ApiImplicitParams({
+			@ApiImplicitParam(name="authorization", value="${userController.authorizationHeader.description}", paramType="header")
+	})
 	@GetMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public List<UserRest> getUsers(@RequestParam(value = "page", defaultValue = "0") int page,
 								   @RequestParam(value = "limit", defaultValue = "2") int limit) {
@@ -109,6 +115,11 @@ public class 	UserController {
 		return returnValue;
 	}
 
+	@ApiOperation(value="The Get User Details Web Service Endpoint",
+			notes="${userController.GetUser.ApiOperation.Notes}")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name="authorization", value="${userController.authorizationHeader.description}", paramType="header")
+	})
 	// http://localhost:8080/mobile-app-ws/users/jfhdjeufhdhdj/addressses
 	@GetMapping(path = "/{id}/addresses", produces = { MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_VALUE, "application/hal+json" })
